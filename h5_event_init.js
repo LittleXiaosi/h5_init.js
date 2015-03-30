@@ -163,4 +163,20 @@
     window.onorientationchange = updataOrientation;
     updataOrientation();
 
+    /*页面所有链接跳转 begin*/
+    (function() {
+        var $aList = document.querySelectorAll('a');
+        var aList_length = $aList.length;
+        for (var i = 0; i < aList_length; i++) {
+            (function(i) {
+                if ($aList[i].href && $aList[i].href != '') {
+                    var h_a = new Hammer($aList[i]);
+                    h_a.on('tap', function() {
+                        window.location.href = $aList[i].href;
+                    });
+                }
+            })(i);
+        }
+    })();
+    /*页面所有链接跳转 end*/
 })(window);
