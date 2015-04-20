@@ -1,30 +1,20 @@
 /**
  * Created by xiaosiyan on 2015/3/19.
  */
+
 ;
 (function(window) {
-
     //页面初始化设定高度和静止滚动事件
-    (function() {
-        var i = 0;
+    function initHeight() {
+        document.documentElement.style.height = window.innerHeight + 'px';
+    }
 
-        function initHeight() {
-            //兼容在APP之内window.innerHeight初始化为0，不能正常显示bug
-            if (window.innerHeight && window.innerHeight > 0) {
-                console.log('有高度：' + window.document.toLocaleString() + 'time:' + new Date().getTime());
-                document.documentElement.style.height = window.innerHeight + 'px';
-                document.body.style.overflow = 'hidden';
-                document.body.addEventListener('touchstart', function(e) {
-                    e.preventDefault();
-                }, false);
-            } else {
-                setTimeout(initHeight, 10);
-            }
-        }
-
-        initHeight();
-        window.onresize = initHeight;
-    })();
+    initHeight();
+    window.onresize = initHeight;
+    document.body.style.overflow = 'hidden';
+    document.body.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+    }, false);
 
     //加载图片
     (function() {
@@ -81,17 +71,7 @@
 
                     if (that.nowCount == endCount) {
                         if (typeof callback == 'function') {
-                            function sto_callback() {
-                                //兼容在APP之内window.innerHeight初始化为0，不能正常显示bug，回调函数需要在
-                                //页面大小能够确认之后再执行
-                                if (window.innerHeight && window.innerHeight > 0) {
-                                    callback();
-                                } else {
-                                    setTimeout(sto_callback, 100);
-                                }
-                            }
-
-                            sto_callback();
+                            callback();
                         }
                     }
                 }
@@ -190,16 +170,10 @@
         for (var i = 0; i < aList_length; i++) {
             (function(i) {
                 if ($aList[i].href && $aList[i].href != '') {
-                    if (window.Hammer) {
-                        var h_a = new Hammer($aList[i]);
-                        h_a.on('tap', function() {
-                            window.location.href = $aList[i].href;
-                        });
-                    } else {
-                        $aList[i].addEventListener('touchstart', function() {
-                            window.location.href = $aList[i].href;
-                        });
-                    }
+                    var h_a = new Hammer($aList[i]);
+                    h_a.on('tap', function() {
+                        window.location.href = $aList[i].href;
+                    });
                 }
             })(i);
         }
@@ -208,7 +182,6 @@
 
     /*添加点击流代码 begin*/
     (function() {
-
         var script1 = document.createElement('script');
         script1.setAttribute('type', 'text/javascript');
         script1.src = 'http://ac.gtimg.com/media/js/ping.js';
