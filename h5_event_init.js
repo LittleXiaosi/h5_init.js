@@ -216,10 +216,12 @@
 
         var script2 = document.createElement('script');
         script2.setAttribute('type', 'text/javascript');
-        script2.innerHTML = "  if (typeof(pgvMain) == 'function') {pgvMain();}";
+        script2.innerHTML = " if (typeof(pgvMain) == 'function') {pgvMain();}";
 
         document.body.appendChild(script1);
-        document.body.appendChild(script2);
+        script1.onload=function(){
+            document.body.appendChild(script2);
+        }
     })();
     /*添加点击流代码 end*/
 })(window);
