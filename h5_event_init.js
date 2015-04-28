@@ -19,7 +19,7 @@
                     e.preventDefault();
                 }, false);
             } else {
-                setTimeout(initHeight, 10);
+                setTimeout(initHeight, 20);
             }
         }
 
