@@ -224,4 +224,15 @@
         }
     })();
     /*添加点击流代码 end*/
+    
+    /*添加queryString begin*/
+    var queryStrings = {};
+    var qs = (window.location.href.split('?')[1] || '').split('&');
+    for (var i = 0, q; q = qs[i]; i++) {
+            q = q.split('=');
+            if (q.length == 2) {
+                queryStrings[q[0]] = decodeURIComponent(q[1]);
+            }
+        }
+    /*添加queryString end*/
 })(window);
