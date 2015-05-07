@@ -219,20 +219,24 @@
         script2.innerHTML = " if (typeof(pgvMain) == 'function') {pgvMain();}";
 
         document.body.appendChild(script1);
-        script1.onload=function(){
+        script1.onload = function() {
             document.body.appendChild(script2);
         }
     })();
     /*添加点击流代码 end*/
-    
+
     /*添加queryString begin*/
-    var queryStrings = {};
-    var qs = (window.location.href.split('?')[1] || '').split('&');
-    for (var i = 0, q; q = qs[i]; i++) {
+    function queryString(key) {
+        var queryStrings = {};
+        var qs = (window.location.href.split('?')[1] || '').split('&');
+        for (var i = 0, q; q = qs[i]; i++) {
             q = q.split('=');
             if (q.length == 2) {
                 queryStrings[q[0]] = decodeURIComponent(q[1]);
             }
         }
+        return queryStrings[key];
+    }
+    window.queryString = queryString;
     /*添加queryString end*/
 })(window);
