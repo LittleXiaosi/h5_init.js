@@ -7,6 +7,7 @@
 3.  屏幕翻转检测
 4.  图片加载loading状态反馈
 5.  添加点击流统计代码
+6.  添加queryString方法
 
 ## 使用方法
 
@@ -16,6 +17,8 @@ var loadImgObj = new loadImg({
         showProgress: function(i) {
         }
     });
+    
+    var value=queryString(key);
 ```
 
 **说明**
