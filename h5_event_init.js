@@ -184,25 +184,36 @@
     window.onorientationchange = updataOrientation;
     updataOrientation();
 
+    //设定a标签点击跳转
     /*页面所有链接跳转 begin*/
     (function() {
-        var $aList = document.querySelectorAll('a');
-        var aList_length = $aList.length;
-        for (var i = 0; i < aList_length; i++) {
-            (function(i) {
-                if ($aList[i].href && $aList[i].href != '') {
-                    if (window.Hammer) {
-                        var h_a = new Hammer($aList[i]);
-                        h_a.on('tap', function() {
-                            window.location.href = $aList[i].href;
-                        });
-                    } else {
-                        $aList[i].addEventListener('touchstart', function() {
-                            window.location.href = $aList[i].href;
-                        });
-                    }
-                }
-            })(i);
+        function changeLocation(target) {
+            if (target && /^http/.test(target.getAttribute('href'))) {
+                window.location.href = target.getAttribute('href');
+            }
+        }
+
+        document.body.addEventListener('click', function(e) {
+            debugger;
+            if (e.target && /^http/.test(e.target.getAttribute('href'))) {
+                e.preventDefault();
+            }
+        });
+
+        if (window.Hammer) {
+            var hammer_body = new Hammer(document.body);
+            hammer_body.on('tap', function(e) {
+                changeLocation(e.target);
+            });
+        } else if (window.TouchHandler) {
+            var touch_body = new TouchHandler(document.body);
+            touch_body.on('click', function(e) {
+                changeLocation(e.target);
+            });
+        } else {
+            document.body.addEventListener('touchstart', function(e) {
+                changeLocation(e.target)
+            });
         }
     })();
     /*页面所有链接跳转 end*/
