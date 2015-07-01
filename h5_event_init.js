@@ -5,6 +5,25 @@
 ;
 (function(window) {
 
+
+    /** 工具函数
+     * 向上寻找符合selector的元素
+     * @param el 目标元素
+     * @param selector 选择器
+     * @param excludeThis 是否包括自己
+     * @returns 符合选择器的元素
+     */
+    function refluxToFind(el, selector, excludeThis) {
+        if (!excludeThis && isThis(el, selector)) {
+            return el;
+        } else if (el.parentNode) {
+            return refluxToFind(el.parentNode, selector);
+        } else {
+            return null;
+        }
+    }
+
+
     //页面初始化设定高度和静止滚动事件
     (function() {
         var i = 0;
@@ -188,15 +207,16 @@
     /*页面所有链接跳转 begin*/
     (function() {
         function changeLocation(target) {
-            if (target && /^http/.test(target.getAttribute('href'))) {
-                window.location.href = target.getAttribute('href');
+            var $a_href = undefined;
+            if (target && ($a_href = refluxToFind(target, 'a[href]'))) {
+                window.location.href = $a_href.getAttribute('href');
             }
         }
 
         document.body.addEventListener('click', function(e) {
-            debugger;
-            if (e.target && /^http/.test(e.target.getAttribute('href'))) {
-                e.preventDefault();
+            var $a_href = undefined;
+            if (e.target && ($a_href = refluxToFind(e.target, 'a[href]'))) {
+                $a_href.preventDefault();
             }
         });
 
@@ -248,6 +268,7 @@
         }
         return queryStrings[key];
     }
+
     window.queryString = queryString;
     /*添加queryString end*/
 })(window);
