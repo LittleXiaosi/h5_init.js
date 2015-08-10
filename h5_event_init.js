@@ -1,10 +1,30 @@
 /**
  * Created by xiaosiyan on 2015/3/19.
- * 在 4.20日更新
+ * 在 7.27日更新
  */
 ;
 (function(window) {
+    /**
+     * 判断某个元素是否符合某个选择器
+     * @param el 目标元素
+     * @param selector 选择器
+     * @returns {*} 是否符合
+     */
+    function isThis(el, selector) {
+        var _matches = (el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector);
 
+        if (_matches) {
+            return _matches.call(el, selector);
+        } else if (el.parentNode) {
+            var nodes = el.parentNode.querySelectorAll(selector);
+            for (var i = nodes.length; i--;)
+                if (nodes[i] === el) {
+                    return true;
+                }
+            return false;
+        }
+        return false;
+    }
 
     /** 工具函数
      * 向上寻找符合selector的元素
@@ -47,6 +67,7 @@
     })();
 
     //加载图片
+    //加载图片必须要有2个级别，data-src-priority=high级别一般用于loading图，只有data-src代表正常地址，正常加载
     (function() {
         var that = {};
 
