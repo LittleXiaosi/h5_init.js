@@ -4,7 +4,7 @@
  */
 ;
 (function(window) {
-    /**
+    /** 工具函数
      * 判断某个元素是否符合某个选择器
      * @param el 目标元素
      * @param selector 选择器
@@ -54,7 +54,7 @@
                 console.log('有高度：' + window.document.toLocaleString() + 'time:' + new Date().getTime());
                 document.documentElement.style.height = window.innerHeight + 'px';
                 document.body.style.overflow = 'hidden';
-                document.body.addEventListener('touchstart', function(e) {
+                document.body.addEventListener('touchmove', function(e) {
                     e.preventDefault();
                 }, false);
             } else {
@@ -92,7 +92,6 @@
         loadImg.prototype = {
             init: function() {
                 if (that.checkDataSrc() == 0) {
-
                     if (that.options.$$allImg.length >= 0 && that.options.$$highImg.length >= 0) {
                         that.loadHighImg();
                     } else {
@@ -235,9 +234,8 @@
         }
 
         document.body.addEventListener('click', function(e) {
-            var $a_href = undefined;
-            if (e.target && ($a_href = refluxToFind(e.target, 'a[href]'))) {
-                $a_href.preventDefault();
+            if (e.target && (refluxToFind(e.target, 'a[href]'))) {
+                e.target.preventDefault();
             }
         });
 
@@ -258,8 +256,8 @@
         }
     })();
     /*页面所有链接跳转 end*/
-
-    /*添加点击流代码 begin*/
+    
+   /*添加点击流代码 begin*/
     (function() {
 
         var script1 = document.createElement('script');
