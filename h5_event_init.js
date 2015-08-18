@@ -43,6 +43,7 @@
         }
     }
 
+    window.refluxToFind = refluxToFind;
 
     //页面初始化设定高度和静止滚动事件
     (function() {
@@ -287,6 +288,146 @@
         }
         return queryStrings[key];
     }
+
+    /*时间轴动画控制*/
+    (function(window) {
+
+        var TIMELOOP = 50;      //定义时间轴循环检测的时间
+        var TIMESPACE = TIMELOOP / 2;     //定义容错区间，一般为循环检测时间的 1/2
+
+        function RunTime(arr) {
+            this.aniList = [];
+            this.aniLink = [];
+            this.nowTime = 0;
+            this.nowLinkIndex = 0;
+
+            this.init(arr);
+            window.xiaosi = this;
+        }
+
+        RunTime.prototype = {
+            //每一次循环的处理
+            timeActive: function() {
+                var that = this;
+
+                if (that.aniLink[0] < that.nowTime + TIMESPACE && that.aniLink[0] > that.nowTime - TIMESPACE) {
+                    var nowAniList = that.aniList[that.aniLink[0]];
+                    for (var x = 0, y = nowAniList.length; x < y; x++) {
+                        if (document.querySelector(nowAniList[x].dom)) {
+                            document.querySelector(nowAniList[x].dom).classList.add(nowAniList[x].class);
+                            if (nowAniList[x].callback && typeof (nowAniList[x].callback) == "function") {
+                                document.querySelector(nowAniList[x].dom).addEventListener('webkitAnimationEnd', (function(a) {
+                                    nowAniList[a].callback();
+                                })(x));
+                            }
+                            if (nowAniList[x].audio && document.querySelector(nowAniList[x].audio)) {
+                                document.querySelector(nowAniList[x].audio).play();
+                            }
+                        } else {
+                            console.dir(nowAniList[x]);
+                            console.log('这个节点寻找不到');
+                        }
+                    }
+                    that.nowLinkIndex++;
+                    that.aniLink.shift();
+                }
+                that.nowTime = that.nowTime + TIMELOOP;
+            },
+
+            //时间循环函数
+            timeLoop: function() {
+                var that = this;
+
+                setTimeout(function() {
+                    if (that.aniLink.length > 0) {
+                        that.timeActive();
+                        that.timeLoop();
+                    } else {
+                        return false;
+                    }
+                }, TIMELOOP);
+            },
+
+            //排序函数
+            orderLink: function(item) {
+                var that = this;
+
+                var num = Number(item.time);
+                if (that.aniLink.length == 0) {
+                    that.aniLink.push(num);
+                    that.aniList[String(num)] = [item];
+                } else {
+                    if (that.aniLink[0] > num) {
+                        that.aniLink.unshift(num);
+                        that.aniList[String(num)] = [item];
+                    } else if (that.aniLink[that.aniLink.length - 1] < num) {
+                        that.aniLink.push(num);
+                        that.aniList[String(num)] = [item];
+                    } else {
+
+                        for (var i = 0, j = that.aniLink.length; i < j; i++) {
+
+                            if ((num > that.aniLink[i] && num < that.aniLink[i + 1])) {
+                                that.aniLink.splice((i + 1), 0, num);
+                                that.aniList[String(num)] = [item];
+                            } else if ((num == that.aniLink[i])) {
+                                if (that.aniList[String(num)]) {
+                                    that.aniList[String(num)].push(item);
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+
+            //初始化时间轴
+            init: function(arr) {
+                var that = this;
+
+                if (that.checkArgument(arr)) {
+                    for (var i = 0, j = arr.length; i < j; i++) {
+                        that.orderLink(arr[i]);
+                    }
+                }
+            },
+
+            //初始化之前检测参数是否有效
+            checkArgument: function(arr) {
+                var that = this;
+
+                if (arr.length && arr.length > 0) {
+                    for (var i = 0, j = arr.length; i < j; i++) {
+                        if (!(arr[i]['time'] || arr[i]['time'] == 0)) {
+                            console.log('时间轴数组参数的第' + i + '个对象time参数有问题');
+                            return false;
+                        }
+                        if (!(arr[i]['dom'] && document.querySelector(arr[i]['dom']))) {
+                            console.log('时间轴数组参数的第' + i + '个对象dom参数有问题');
+                            return false;
+                        }
+                        if (!(arr[i]['class'])) {
+                            console.log('时间轴数组参数的第' + i + '个对象dom参数有问题');
+                            return false;
+                        }
+                    }
+                    return true;
+                } else {
+                    console.log('传入的时间轴数组格式有误或者参数为空');
+                    return false;
+                }
+            },
+
+            //开始播放动画
+            play: function() {
+                var that = this;
+
+                that.timeActive();
+                that.timeLoop();
+            }
+        };
+
+        window.RunTime = RunTime;
+    })(window);
 
     window.queryString = queryString;
     /*添加queryString end*/
