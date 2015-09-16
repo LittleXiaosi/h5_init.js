@@ -288,8 +288,10 @@
         }
         return queryStrings[key];
     }
-
-    /*时间轴动画控制*/
+    window.queryString = queryString;
+    /*添加queryString end*/
+    
+    /*时间轴动画控制 begin*/
     (function(window) {
 
         var TIMELOOP = 50;      //定义时间轴循环检测的时间
@@ -428,7 +430,6 @@
 
         window.RunTime = RunTime;
     })(window);
-
-    window.queryString = queryString;
-    /*添加queryString end*/
+    /*时间轴动画控制 end*/
+   
 })(window);
