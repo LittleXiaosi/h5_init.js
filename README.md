@@ -109,10 +109,10 @@ RunTime主要是用来控制按照时间轴发生的复杂组合动画和音频�
 ```
 说明：
 
-1. time参数的单位为ms 
-2. dom参数需要传入一个queryselector选择器 
-3. class参数是用来触发动画的，把需要触发的动画放在该class内 
-4. audio参数需要传入一个queryselector选择器，寻找对应的audio元素，触发.play()方法 
-5. callback方法是在动画执行完毕触发的，一个runTime对象内可以有多个回调函数 
-6. 可以存在单纯只有 time和audio参数情况，只触发在对应时间播放音乐，但是不支持callback，因为audio的ended事件判断非常不准确 
-7. RunTime内的audio只支持.play()方法，不支持.pause()方法，复杂音乐时间控制请单独写控制器，精确控制 
+1.  time参数的单位为ms 
+2.  dom参数需要传入一个queryselector选择器 
+3.  class参数是用来触发动画的，把需要触发的动画放在该class内 
+4.  audio参数需要传入一个queryselector选择器，寻找对应的audio元素，触发.play()方法 
+5.  callback方法是在动画执行完毕触发的，一个runTime对象内可以有多个回调函数 
+6.  可以存在单纯只有 time和audio参数情况，只触发在对应时间播放音乐，但是不支持callback，因为audio的ended事件判断非常不准确 
+7.  RunTime内的audio只支持.play()方法，不支持.pause()方法，复杂音乐时间控制请单独写控制器，精确控制 
