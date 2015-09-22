@@ -99,7 +99,7 @@ RunTime主要是用来控制按照时间轴发生的复杂组合动画和音频�
                 {
                     time: 7000,                             //播放动画开始时间，7000ms
                     dom: '.page1-getdown',                  //需要操作的dom节点
-                    class: 'page1-getdown-ani',             //给dom节点添加class名，触发动画
+                    'class': 'page1-getdown-ani',           //给dom节点添加class名，触发动画
                     callback: function() {                  //完成 'page1-getdown-ani'触发的动画之后，触发回调函数
                         runtime2.play();
                     }
