@@ -208,26 +208,46 @@ window.addEventListener('load', function() {
 
         /*屏幕翻转检测 begin*/
         (function() {
-            var onVertical = undefined;
-            var updataOrientation = function() {
-                if (window.orientation == '-90' || window.orientation == '90') {
-                    if (onVertical == undefined) {
-                        onVertical = false;
-                    } else if (onVertical == true) {
-                        onVertical = false;
+            var that = {};
+
+            function Orientation(callback) {
+                that = this;
+                that.onVertical = undefined;
+                that.callback = callback;
+                window.onorientationchange = that.updataOrientation;
+                that.updataOrientation();
+            }
+
+            Orientation.prototype = {
+                updataOrientation: function() {
+                    if (window.orientation == '-90' || window.orientation == '90') {
+                        if (that.onVertical == undefined) {
+                            that.onVertical = false;
+                        } else if (that.onVertical == true) {
+                            that.onVertical = false;
+                        }
+                        if (that.callback && typeof that.callback == 'function') {
+                            that.callback();
+                        } else {
+                            alert('这样子没法正常显示啦，转过来啦');
+                        }
+                    } else {
+                        if (that.onVertical == undefined) {
+                            that.onVertical = true;
+                        } else if (that.onVertical == false) {
+                            that.onVertical = true;
+                            history.go(0);
+                        }
                     }
-                    alert('这样子没法正常显示啦，转过来啦');
-                } else {
-                    if (onVertical == undefined) {
-                        onVertical = true;
-                    } else if (onVertical == false) {
-                        onVertical = true;
-                        history.go(0);
+                },
+                setCallback: function(callback) {
+                    if (callback && typeof callback == 'function') {
+                        that.callback = callback;
                     }
                 }
             }
-            window.onorientationchange = updataOrientation;
-            updataOrientation();
+
+            window.orientationTester = new Orientation();
         })();
         /*屏幕翻转检测 end*/
 
