@@ -51,8 +51,6 @@ window.addEventListener('load', function() {
 
         //页面初始化设定高度和静止滚动事件
         (function() {
-            var i = 0;
-
             function initHeight() {
                 //兼容在APP之内window.innerHeight初始化为0，不能正常显示bug
                 if (window.innerHeight && window.innerHeight > 0) {
@@ -67,7 +65,7 @@ window.addEventListener('load', function() {
                 }
             }
 
-            initHeight();
+            //initHeight();
             window.onresize = initHeight;
         })();
 
@@ -261,7 +259,7 @@ window.addEventListener('load', function() {
 
             document.body.addEventListener('click', function(e) {
                 if (e.target && (refluxToFind(e.target, 'a[href]'))) {
-                    e.target.preventDefault();
+                    e.preventDefault();
                 }
             });
 
@@ -326,7 +324,7 @@ window.addEventListener('load', function() {
                         var nowAniList = that.aniList[that.aniLink[0]];
                         for (var x = 0, y = nowAniList.length; x < y; x++) {
                             if (document.querySelector(nowAniList[x].dom)) {
-                                document.querySelector(nowAniList[x].dom).classList.add(nowAniList[x].class);
+                                document.querySelector(nowAniList[x].dom).classList.add(nowAniList[x].className);
                                 if (nowAniList[x].callback && typeof (nowAniList[x].callback) == "function") {
                                     document.querySelector(nowAniList[x].dom).addEventListener('webkitAnimationEnd', (function(a) {
                                         nowAniList[a].callback();
@@ -415,8 +413,8 @@ window.addEventListener('load', function() {
                             if (arr[i]['dom'] && !(document.querySelector(arr[i]['dom']))) {
                                 console.log('时间轴数组参数的第' + i + '个对象dom参数有问题,详情：');
                                 console.dir(arr[i]);
-                                if (!(arr[i]['class'])) {
-                                    console.log('时间轴数组参数的第' + i + '个对象class参数缺失,详情：');
+                                if (!(arr[i]['className'])) {
+                                    console.log('时间轴数组参数的第' + i + '个对象className参数缺失,详情：');
                                     console.dir(arr[i]);
                                     return false;
                                 }
